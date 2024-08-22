@@ -1,118 +1,84 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React from "react";
+import { View, StyleSheet, Text, TouchableOpacity, Image, Dimensions } from "react-native";
+import LifestyleWellnessScreen from "./screens/LifestyleWellnessScreen"; // Import the screen
+import HomeScreen from "./screens/HomeScreen";
+import WorkoutScreen from "./screens/WorkoutScreen";
+import { DrawerContentScrollView, DrawerItemList, createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from '@react-navigation/stack';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+const App = () => {
+    return (
+        <NavigationContainer>
+            <Drawer.Navigator
+                drawerContent={(props) => <CustomDrawerComponent {...props} />}
+                screenOptions={{
+                    drawerActiveTintColor: 'darkslateblue',
+                    drawerActiveBackgroundColor: 'pink',
+                }}
+            >
+                <Drawer.Screen 
+                  name="Home" 
+                  component={HomeScreen} 
+                />
+                <Drawer.Screen 
+                    name="Lifestyle and Wellness" 
+                    component={LifestyleWellnessScreen}
+                />  
+                <Drawer.Screen 
+                    name="WorkoutStack" 
+                    component={WorkoutStackNavigator} // Adding stack navigator as a drawer screen
+                />
+            </Drawer.Navigator>
+        </NavigationContainer>
+    );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen  come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+const WorkoutStackNavigator = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+            <Stack.Screen name="Workout" component={WorkoutScreen} options={{headerShown: false}}/>
+        </Stack.Navigator>
+    );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+const CustomDrawerComponent = (props: any) => {
+    const windowHeight = Dimensions.get('window').height;
+
+    return (
+        <DrawerContentScrollView {...props}>
+            <View style={{ height: "100%" }}>
+                <View style={{ backgroundColor: '#fff', paddingTop: 10, height: windowHeight * .75 }}>
+                    <DrawerItemList {...props} />
+                </View>
+                <View style={{
+                    borderTopWidth: 1,
+                    borderTopColor: 'gray',
+                }}>
+                    <TouchableOpacity>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginLeft: 20,
+                            }}>
+                            <Text
+                                style={{
+                                    marginLeft: 20,
+                                    fontSize: 23,
+                                }}>
+                                Logout
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </DrawerContentScrollView>
+    );
+}
 
 export default App;
