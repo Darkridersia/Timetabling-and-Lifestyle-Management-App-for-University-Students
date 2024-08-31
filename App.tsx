@@ -1,14 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image, Dimensions } from "react-native";
-import LifestyleWellnessScreen from "./screens/LifestyleWellnessScreen"; // Import the screen
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions } from "react-native";
+import LifestyleWellnessScreen from "./screens/LifestyleWellnessScreen"; 
 import HomeScreen from "./screens/HomeScreen";
-import WorkoutScreen from "./screens/WorkoutScreen";
 import { DrawerContentScrollView, DrawerItemList, createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from '@react-navigation/stack';
+import StackNavigator from './StackNavigator'; // Import your StackNavigator
 
 const Drawer = createDrawerNavigator();
-const Stack = createStackNavigator();
 
 const App = () => {
     return (
@@ -21,30 +19,28 @@ const App = () => {
                 }}
             >
                 <Drawer.Screen 
-                  name="Home" 
-                  component={HomeScreen} 
+                    name="Home" 
+                    component={HomeScreen} 
                 />
                 <Drawer.Screen 
                     name="Lifestyle and Wellness" 
                     component={LifestyleWellnessScreen}
                 />  
+                {/* StackNavigator as a screen but hidden in drawer */}
                 <Drawer.Screen 
                     name="WorkoutStack" 
-                    component={WorkoutStackNavigator} // Adding stack navigator as a drawer screen
+                    component={StackNavigator} 
+                    options={{ 
+                        drawerLabel: () => null,  // Hide from drawer menu
+                        title: 'Workout',
+                        drawerIcon: () => null // Hide the icon too
+                    }} 
                 />
             </Drawer.Navigator>
         </NavigationContainer>
     );
 }
 
-const WorkoutStackNavigator = () => {
-    return (
-        <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-            <Stack.Screen name="Workout" component={WorkoutScreen} options={{headerShown: false}}/>
-        </Stack.Navigator>
-    );
-}
 
 const CustomDrawerComponent = (props: any) => {
     const windowHeight = Dimensions.get('window').height;

@@ -1,10 +1,35 @@
-// types.ts
 import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootStackParamList = {
   Home: undefined;
-  Workout: undefined;
-  // Add other screens here
+  WorkoutStack: {
+    screen: 'Workout';
+    params: {
+      image: string;
+      excersises: {
+        id: string;
+        image: string;
+        name: string;
+        sets: number;
+      }[];
+      id: string;
+    };
+  };
+  LifestyleAndWellnessScreen: undefined;
+  Fit: {
+    excersises: {
+      id: string;
+      image: string;
+      name: string;
+      sets: number;
+    }[];
+  };
+  Rest: undefined;
 };
 
-export type FitnessCardsNavigationProp = StackNavigationProp<RootStackParamList, 'Workout'>;
+
+// Export the type for use in other components
+export type FitnessCardsNavigationProp = StackNavigationProp<RootStackParamList, 'WorkoutStack'>;
+export type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
+
+
