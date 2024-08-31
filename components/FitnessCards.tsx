@@ -2,8 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from '@react-navigation/native';
-import { FitnessCardsNavigationProp } from '../types'; // Adjust the import path
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types'; // Adjust the import path
 import fitness from '../data/fitness';
+
+type FitnessCardsNavigationProp = StackNavigationProp<RootStackParamList, 'Workout'>;
 
 const FitnessCards = () => {
   const navigation = useNavigation<FitnessCardsNavigationProp>();
@@ -12,13 +15,8 @@ const FitnessCards = () => {
     <View>
       {fitness.map((item, key) => (
         <Pressable
-          onPress={() => navigation.navigate("WorkoutStack", {
-            screen: "Workout", // Navigate directly to the Workout screen
-            params: {
-              image: item.image,
-              excersises: item.excersises,
-              id: item.id
-            },
+          onPress={() => navigation.navigate('Workout', {
+            excersises: item.excersises, // Use 'excersises' as defined in the parameter type
           })}
           style={styles.card}
           key={key}

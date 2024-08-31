@@ -2,18 +2,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootStackParamList = {
   Home: undefined;
-  WorkoutStack: {
-    screen: 'Workout';
-    params: {
-      image: string;
-      excersises: {
-        id: string;
-        image: string;
-        name: string;
-        sets: number;
-      }[];
+  Workout: { // Ensure this matches the name and params
+    excersises: {
       id: string;
-    };
+      image: string;
+      name: string;
+      sets: number;
+    }[];
   };
   LifestyleAndWellnessScreen: undefined;
   Fit: {
@@ -24,12 +19,10 @@ export type RootStackParamList = {
       sets: number;
     }[];
   };
-  Rest: undefined;
-};
-
+  Rest: {
+    incrementIndex?: () => void; // Add this line to support the parameter
+  };};
 
 // Export the type for use in other components
-export type FitnessCardsNavigationProp = StackNavigationProp<RootStackParamList, 'WorkoutStack'>;
+export type FitnessCardsNavigationProp = StackNavigationProp<RootStackParamList, 'Workout'>;
 export type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
-
-

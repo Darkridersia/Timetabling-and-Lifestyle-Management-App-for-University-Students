@@ -1,40 +1,45 @@
 import { StyleSheet, Text, View, SafeAreaView, Image } from "react-native";
 import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 
+// Define the type for the route parameters
+type RestScreenRouteParams = {
+  incrementIndex: () => void;
+};
+
+// Apply the type to the route
 const RestScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute<RouteProp<{ params: RestScreenRouteParams }, 'params'>>();
+  const { incrementIndex } = route.params; // Use the defined type
 
-  // Initialise 
-  let timer = 0;
-
-  // Initialise the timer from 3
   const [timeLeft, setTimeLeft] = useState(3);
 
-  const startTime = () => {
-    setTimeout(() => {
-      if (timeLeft <= 0) {
-        navigation.goBack();
-        clearTimeout(timer);
-      }
-      setTimeLeft(timeLeft - 1);
-    }, 1000);// 1000 -> 1 sec
-  };
   useEffect(() => {
-    startTime();
-    //clean up
-    return () => clearTimeout(timer);
-  });
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timer);
+          setTimeout(() => {
+            incrementIndex();
+            navigation.goBack();
+          }, 0); // Slight delay before incrementing index
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <SafeAreaView>
       <Image
-        // resizeMode="contain"
         source={{
           uri: "https://cdn-images.cure.fit/www-curefit-com/image/upload/fl_progressive,f_auto,q_auto:eco,w_500,ar_500:300,c_fit/dpr_2/image/carefit/bundle/CF01032_magazine_2.png",
         }}
         style={{ width: "100%", height: 420 }}
       />
-
       <Text
         style={{
           fontSize: 30,
@@ -45,7 +50,6 @@ const RestScreen = () => {
       >
         TAKE A BREAK!
       </Text>
-
       <Text
         style={{
           fontSize: 40,
@@ -61,5 +65,3 @@ const RestScreen = () => {
 };
 
 export default RestScreen;
-
-const styles = StyleSheet.create({});

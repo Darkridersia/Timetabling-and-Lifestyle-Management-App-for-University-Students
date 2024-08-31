@@ -28,7 +28,7 @@ const App = () => {
                 />  
                 {/* StackNavigator as a screen but hidden in drawer */}
                 <Drawer.Screen 
-                    name="WorkoutStack" 
+                    name="Workout" 
                     component={StackNavigator} 
                     options={{ 
                         drawerLabel: () => null,  // Hide from drawer menu
