@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RootStackParamList, RootStackNavigationProp } from '../types';
+import { FitnessItems } from "../Context";
 
 type FitScreenRouteParams = RouteProp<RootStackParamList, 'Fit'>;
 
@@ -14,6 +15,10 @@ const FitScreen = () => {
   const [index, setIndex] = useState(0);
   const current = exercises[index];
 
+  const { completed, setCompleted, minutes, setMinutes, calories, setCalories, workout, setWorkout } = useContext(FitnessItems)
+
+  console.log(completed, "completed exercise")
+
   const incrementIndex = () => {
     setIndex((prevIndex) => prevIndex + 1);
   };
@@ -22,17 +27,26 @@ const FitScreen = () => {
     setIndex((prevIndex) => prevIndex - 1);
   };
 
+  // Func for DONE btn
   const handleDone = () => {
     if (index + 1 < exercises.length) {
+      // It will be brought to the REST Screen
       navigation.navigate("Rest", {
         incrementIndex: incrementIndex, // Pass the increment callback
       });
+
+      setCompleted([...completed, current.name])
+      setWorkout(workout + 1)
+      setMinutes(minutes + 2.5)
+      setCalories(calories + 6.30)
     } else {
       navigation.navigate("LifestyleAndWellnessScreen" as never);
     }
   };
 
+  // funct for SKIP btn
   const handleSkip = () => {
+    // It won't be brought to REST screen
     if (index + 1 < exercises.length) {
       incrementIndex();
     } else {
@@ -40,6 +54,7 @@ const FitScreen = () => {
     }
   };
 
+  // Function for PREV btn
   const handlePrev = () => {
     if (index > 0) {
       decrementIndex();
@@ -79,11 +94,12 @@ const FitScreen = () => {
             width: 100
           }}
           onPress={handlePrev} // Handling the PREV button press
+
         >
           <Text style={{ color: "white", fontWeight: "bold", textAlign: "center" }}>PREV</Text>
         </Pressable>
 
-        <Pressable 
+        <Pressable
           style={{
             backgroundColor: "green",
             padding: 10,

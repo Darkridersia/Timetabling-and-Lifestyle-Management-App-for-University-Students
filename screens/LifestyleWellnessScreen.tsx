@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import FitnessCards from "../components/FitnessCards";
+import { FitnessItems } from "../Context";
 
 const LifestyleWellnessScreen = () => {
+
+    const { minutes, calories, workout } = useContext(FitnessItems)
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.header}>
@@ -10,17 +14,23 @@ const LifestyleWellnessScreen = () => {
 
                 <View style={styles.statsContainer}>
                     <View style={styles.stat}>
-                        <Text style={styles.statValue}>0</Text>
+                        <Text style={styles.statValue}>
+                            {workout}
+                        </Text>
                         <Text style={styles.statLabel}>WORKOUTS</Text>
                     </View>
 
                     <View style={styles.stat}>
-                        <Text style={styles.statValue}>0</Text>
+                        <Text style={styles.statValue}>
+                            {calories}
+                        </Text>
                         <Text style={styles.statLabel}>KCAL</Text>
                     </View>
 
                     <View style={styles.stat}>
-                        <Text style={styles.statValue}>0</Text>
+                        <Text style={styles.statValue}>
+                            {minutes}
+                        </Text>
                         <Text style={styles.statLabel}>MINS</Text>
                     </View>
                 </View>

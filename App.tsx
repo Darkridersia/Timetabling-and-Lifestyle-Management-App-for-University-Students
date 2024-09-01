@@ -1,46 +1,48 @@
-import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions } from "react-native";
-import LifestyleWellnessScreen from "./screens/LifestyleWellnessScreen"; 
-import HomeScreen from "./screens/HomeScreen";
-import { DrawerContentScrollView, DrawerItemList, createDrawerNavigator } from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
+import React from 'react';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { DrawerContentScrollView, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
 import StackNavigator from './StackNavigator'; // Import your StackNavigator
+import { FitnessItems, FitnessContext } from './Context'; // Import FitnessProvider
+import HomeScreen from './screens/HomeScreen';
+import LifestyleWellnessScreen from './screens/LifestyleWellnessScreen';
 
 const Drawer = createDrawerNavigator();
 
 const App = () => {
     return (
-        <NavigationContainer>
-            <Drawer.Navigator
-                drawerContent={(props) => <CustomDrawerComponent {...props} />}
-                screenOptions={{
-                    drawerActiveTintColor: 'darkslateblue',
-                    drawerActiveBackgroundColor: 'pink',
-                }}
-            >
-                <Drawer.Screen 
-                    name="Home" 
-                    component={HomeScreen} 
-                />
-                <Drawer.Screen 
-                    name="Lifestyle and Wellness" 
-                    component={LifestyleWellnessScreen}
-                />  
-                {/* StackNavigator as a screen but hidden in drawer */}
-                <Drawer.Screen 
-                    name="WorkoutStack" 
-                    component={StackNavigator} 
-                    options={{ 
-                        drawerLabel: () => null,  // Hide from drawer menu
-                        title: 'Workout',
-                        drawerIcon: () => null // Hide the icon too
-                    }} 
-                />
-            </Drawer.Navigator>
-        </NavigationContainer>
+        <FitnessContext>
+            <NavigationContainer>
+                <Drawer.Navigator
+                    drawerContent={(props) => <CustomDrawerComponent {...props} />}
+                    screenOptions={{
+                        drawerActiveTintColor: 'darkslateblue',
+                        drawerActiveBackgroundColor: 'pink',
+                    }}
+                >
+                    <Drawer.Screen 
+                        name="Home" 
+                        component={HomeScreen} 
+                    />
+                    <Drawer.Screen 
+                        name="Lifestyle and Wellness" 
+                        component={LifestyleWellnessScreen}
+                    />  
+                    {/* StackNavigator as a screen but hidden in drawer */}
+                    <Drawer.Screen 
+                        name="WorkoutStack" 
+                        component={StackNavigator} 
+                        options={{ 
+                            drawerLabel: () => null,  // Hide from drawer menu
+                            title: 'Workout',
+                            drawerIcon: () => null // Hide the icon too
+                        }} 
+                    />
+                </Drawer.Navigator>
+            </NavigationContainer>
+        </FitnessContext>
     );
-}
-
+};
 
 const CustomDrawerComponent = (props: any) => {
     const windowHeight = Dimensions.get('window').height;
@@ -75,6 +77,6 @@ const CustomDrawerComponent = (props: any) => {
             </View>
         </DrawerContentScrollView>
     );
-}
+};
 
 export default App;
