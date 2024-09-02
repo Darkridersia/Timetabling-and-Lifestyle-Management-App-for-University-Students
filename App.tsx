@@ -6,6 +6,7 @@ import StackNavigator from './StackNavigator'; // Import your StackNavigator
 import { FitnessItems, FitnessContext } from './Context'; // Import FitnessProvider
 import HomeScreen from './screens/HomeScreen';
 import LifestyleWellnessScreen from './screens/LifestyleWellnessScreen';
+import Location from './screens/Location';
 
 const Drawer = createDrawerNavigator();
 
@@ -20,23 +21,35 @@ const App = () => {
                         drawerActiveBackgroundColor: 'pink',
                     }}
                 >
-                    <Drawer.Screen 
-                        name="Home" 
-                        component={HomeScreen} 
+                    <Drawer.Screen
+                        name="Home"
+                        component={HomeScreen}
                     />
-                    <Drawer.Screen 
-                        name="Lifestyle and Wellness" 
+
+                    <Drawer.Screen
+                        name="Lifestyle and Wellness"
                         component={LifestyleWellnessScreen}
-                    />  
+                    />
+
                     {/* StackNavigator as a screen but hidden in drawer */}
-                    <Drawer.Screen 
-                        name="WorkoutStack" 
-                        component={StackNavigator} 
-                        options={{ 
+                    <Drawer.Screen
+                        name="WorkoutStack"
+                        component={StackNavigator}
+                        options={{
                             drawerLabel: () => null,  // Hide from drawer menu
                             title: 'Workout',
                             drawerIcon: () => null // Hide the icon too
-                        }} 
+                        }}
+                    />
+
+                    <Drawer.Screen
+                        name="Location"
+                        component={Location}
+                        options={{
+                            drawerLabel: () => null,  // Hide from drawer menu
+                            title: 'Location',
+                            drawerIcon: () => null // Hide the icon too
+                        }}
                     />
                 </Drawer.Navigator>
             </NavigationContainer>

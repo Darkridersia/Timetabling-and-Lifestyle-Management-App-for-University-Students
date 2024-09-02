@@ -22,6 +22,7 @@ export type RootStackParamList = {
   Rest: { 
     incrementIndex: () => void; // Expecting a function as a parameter
   };
+  Location: undefined;
 };
 
 // Export the type for use in other components

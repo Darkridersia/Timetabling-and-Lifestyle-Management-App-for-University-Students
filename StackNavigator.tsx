@@ -4,6 +4,7 @@ import WorkoutScreen from './screens/WorkoutScreen';
 import LifestyleAndWellnessScreen from './screens/LifestyleWellnessScreen'; // Import your other screen
 import FitScreen from './screens/FitScreen';
 import RestScreen from './screens/RestScreen';
+import Location from './screens/Location';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,12 @@ const StackNavigator = () => {
                 name="Rest" // Ensure this matches the screen name used in navigation
                 component={RestScreen}
                 options={{ headerShown: false }} // Adjust as needed
+            />
+
+            <Stack.Screen
+                name="Location"
+                component={Location}
+                options={{ headerShown: false }}
             />
         </Stack.Navigator>
 

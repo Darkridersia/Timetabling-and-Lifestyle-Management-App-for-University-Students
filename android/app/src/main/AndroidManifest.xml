@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Added the below code for Geolocation -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    
 
     <application
       android:name=".MainApplication"
@@ -10,6 +14,12 @@
       android:allowBackup="false"
       android:theme="@style/AppTheme"
       android:supportsRtl="true">
+      
+      <!-- Google MAP - android:value = API KEY -->
+      <meta-data
+      android:name="com.google.android.geo.API_KEY"
+      android:value="AIzaSyAWlL5ODhkWHmb_ZZu0cxdd4BY9G9EU6t4"/>
+
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

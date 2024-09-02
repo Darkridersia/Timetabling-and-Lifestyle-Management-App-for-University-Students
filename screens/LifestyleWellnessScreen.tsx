@@ -2,15 +2,31 @@ import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import FitnessCards from "../components/FitnessCards";
 import { FitnessItems } from "../Context";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useNavigation } from "@react-navigation/native";
+import Location from "./Location";
+import { RootStackNavigationProp } from "../types"; // Import your navigation prop type
 
 const LifestyleWellnessScreen = () => {
 
     const { minutes, calories, workout } = useContext(FitnessItems)
+    const navigation = useNavigation<RootStackNavigationProp>(); // Use your navigation type
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerText}>Home Workout</Text>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                    <Text style={styles.headerText}>Home Workout</Text>
+
+                    <MaterialCommunityIcons
+                        onPress={() => navigation.navigate("Location")} name="map-search-outline"
+                        size={30}
+                        color="white"
+                        fontWeight="bold"
+                        padding={10}
+                        paddingBottom={10}
+                    />
+                </View>
 
                 <View style={styles.statsContainer}>
                     <View style={styles.stat}>
@@ -44,9 +60,7 @@ const LifestyleWellnessScreen = () => {
                     />
                 </View>
             </View>
-
             <FitnessCards />
-
         </ScrollView>
     );
 };
