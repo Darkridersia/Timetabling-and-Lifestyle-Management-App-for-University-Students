@@ -7,6 +7,7 @@ import { FitnessItems, FitnessContext } from './Context'; // Import FitnessProvi
 import HomeScreen from './screens/HomeScreen';
 import LifestyleWellnessScreen from './screens/LifestyleWellnessScreen';
 import Location from './screens/Location';
+import TimeTablingScreen from "./screens/TimeTablingScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -25,7 +26,12 @@ const App = () => {
                         name="Home"
                         component={HomeScreen}
                     />
-
+                    
+                    <Drawer.Screen 
+                        name="TimeTable" 
+                        component={TimeTablingScreen} 
+                    
+                    />
                     <Drawer.Screen
                         name="Lifestyle and Wellness"
                         component={LifestyleWellnessScreen}
