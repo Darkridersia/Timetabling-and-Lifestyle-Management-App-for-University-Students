@@ -5,6 +5,9 @@ import LifestyleAndWellnessScreen from './screens/LifestyleWellnessScreen'; // I
 import FitScreen from './screens/FitScreen';
 import RestScreen from './screens/RestScreen';
 import Location from './screens/Location';
+import LoginScreen from './screens/LoginScreen';
+import SignUpScreen from './screens/SignUpScreen';
+import HomeScreen from './screens/HomeScreen';
 
 const Stack = createStackNavigator();
 
@@ -12,37 +15,46 @@ const StackNavigator = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
                 name="Workout"
                 component={WorkoutScreen}
                 options={{ headerShown: false }}
             />
-
             <Stack.Screen
-                name="LifestyleAndWellnessScreen" // Ensure this matches the screen name used in navigation
+                name="LifestyleAndWellnessScreen"
                 component={LifestyleAndWellnessScreen}
-                options={{ headerShown: false }} // Adjust as needed
+                options={{ headerShown: false }}
             />
-
             <Stack.Screen
-                name="Fit" // Ensure this matches the screen name used in navigation
+                name="Fit"
                 component={FitScreen}
-                options={{ headerShown: false }} // Adjust as needed
+                options={{ headerShown: false }}
             />
-
             <Stack.Screen
-                name="Rest" // Ensure this matches the screen name used in navigation
+                name="Rest"
                 component={RestScreen}
-                options={{ headerShown: false }} // Adjust as needed
+                options={{ headerShown: false }}
             />
-
             <Stack.Screen
                 name="Location"
                 component={Location}
                 options={{ headerShown: false }}
             />
+            <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SignUp"
+                component={SignUpScreen}
+                options={{ headerShown: false }}
+            />
         </Stack.Navigator>
-
-
     );
 }
 

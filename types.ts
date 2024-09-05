@@ -23,6 +23,9 @@ export type RootStackParamList = {
     incrementIndex: () => void; // Expecting a function as a parameter
   };
   Location: undefined;
+  SignUp: undefined; // Add SignUp route here
+  Login: undefined; // Assuming you have a Login screen
+  Main: undefined;
 };
 
 // Export the type for use in other components

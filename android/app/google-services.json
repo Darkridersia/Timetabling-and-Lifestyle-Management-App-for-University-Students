@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "701139318512",
+    "project_id": "wirelessasm-b62ee",
+    "storage_bucket": "wirelessasm-b62ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701139318512:android:89e0ade0266b1aee4bf435",
+        "android_client_info": {
+          "package_name": "com.wadassignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTbfrgqF7q08WItwOXkTqTNOEahb1GTu4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
