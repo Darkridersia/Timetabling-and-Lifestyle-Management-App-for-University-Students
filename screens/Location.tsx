@@ -3,48 +3,101 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
     Alert,
     PermissionsAndroid,
+    Platform,
     StyleSheet,
     Text,
     ToastAndroid,
-    TouchableNativeFeedback,
     TouchableOpacity,
     View
 } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
 import { markers } from '../markers';
 
 const initialRegion = {
-    latitude: 3.0418, // Replace with your own coordinates
-    longitude: 101.7931,
+    latitude: 4.2105, // Replace with your own coordinates
+    longitude: 101.9758r,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
-}
+};
 
 const Location = () => {
-    const mapRef = useRef<MapView>()
+    const [region, setRegion] = useState(initialRegion);
+    const mapRef = useRef<MapView>(null);
     const navigation = useNavigation();
 
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity onPress={focusMap}>
-                    <View style={{ padding: 10}}>
-                        <Text style = {{fontWeight: "900", fontSize: 15}}>Focus</Text>
+                <TouchableOpacity onPress={getCurrentLocation}>
+                    <View style={{ padding: 10 }}>
+                        <Text style={{ fontWeight: "900", fontSize: 15 }}>Get Location</Text>
                     </View>
                 </TouchableOpacity>
             ),
         });
-    }, [])
+        requestFineLocationPermission();
+    }, []);
 
-    const focusMap = () => {
-        const UTAR = {
-            latitude: 3.0414040974427876, // Replace with your own coordinates
-            longitude: 101.79376151729306,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-        };
-        mapRef.current?.animateCamera({ center: UTAR, zoom: 16.5 }, { duration: 3000 });
+    const requestFineLocationPermission = async () => {
+        try {
+            if (Platform.OS === 'android') {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                    {
+                        title: 'Location Access Required',
+                        message: 'This app needs to access your precise location',
+                        buttonPositive: 'OK',
+                    },
+                );
+                console.log(`Permission granted: ${granted}`);
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    getCurrentLocation();
+                } else {
+                    ToastAndroid.show('Location Permission Denied', ToastAndroid.SHORT);
+                }
+            } else {
+                // For iOS (handled automatically)
+                getCurrentLocation();
+            }
+        } catch (err) {
+            console.warn(err);
+        }
     };
+    
+
+    const getCurrentLocation = () => {
+        console.log('Attempting to get current location...');
+        Geolocation.getCurrentPosition(
+            position => {
+                console.log('Location fetched successfully:', position);
+                const { latitude, longitude } = position.coords;
+                setRegion({
+                    latitude,
+                    longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                });
+    
+                mapRef.current?.animateCamera({
+                    center: {
+                        latitude: latitude,
+                        longitude: longitude,
+                    },
+                    pitch: 0,
+                    heading: 0,
+                    altitude: 1000, // Adjust this value to set the zoom level (higher values zoom out, lower values zoom in)
+                    zoom: 17, // Set the zoom level (range: 0 to 20)
+                }, { duration: 1000 });
+            },
+            error => {
+                console.error('Error fetching location:', error);
+                Alert.alert('Error', 'Unable to fetch location');
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+    };
+    
 
     const onRegionChange = (region: Region) => {
         console.log(region);
@@ -59,12 +112,12 @@ const Location = () => {
             <MapView
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
-                initialRegion={initialRegion}
+                initialRegion={region}
                 showsUserLocation
                 showsMyLocationButton
                 onRegionChangeComplete={onRegionChange}
-                // Can ignore the error
-                ref={mapRef}>
+                ref={mapRef}
+            >
                 {markers.map((marker, index) => (
                     <Marker key={index} coordinate={marker}>
                         <Callout>
@@ -76,15 +129,15 @@ const Location = () => {
                 ))}
             </MapView>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, // Ensures the container takes up the full screen
+        flex: 1,
     },
     map: {
-        ...StyleSheet.absoluteFillObject, // Ensures the map takes up the full screen
+        ...StyleSheet.absoluteFillObject,
     },
 });
 
