@@ -15,8 +15,8 @@ import Geolocation from '@react-native-community/geolocation';
 import { markers } from '../markers';
 
 const initialRegion = {
-    latitude: 4.2105, // Replace with your own coordinates
-    longitude: 101.9758,
+    latitude: 3.1319, // Replace with your own coordinates
+    longitude: 101.6841,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
 };
@@ -52,19 +52,18 @@ const Location = () => {
                 );
                 console.log(`Permission granted: ${granted}`);
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    getCurrentLocation();
+                    // Do nothing here to avoid fetching location on screen load
                 } else {
                     ToastAndroid.show('Location Permission Denied', ToastAndroid.SHORT);
                 }
             } else {
                 // For iOS (handled automatically)
-                getCurrentLocation();
+                // Do nothing here to avoid fetching location on screen load
             }
         } catch (err) {
             console.warn(err);
         }
     };
-    
 
     const getCurrentLocation = () => {
         console.log('Attempting to get current location...');
@@ -86,8 +85,8 @@ const Location = () => {
                     },
                     pitch: 0,
                     heading: 0,
-                    altitude: 1000, // Adjust this value to set the zoom level (higher values zoom out, lower values zoom in)
-                    zoom: 17, // Set the zoom level (range: 0 to 20)
+                    altitude: 1000, // Adjust this value to set the zoom level
+                    zoom: 17, // Set the zoom level
                 }, { duration: 1000 });
             },
             error => {
@@ -97,7 +96,6 @@ const Location = () => {
             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
         );
     };
-    
 
     const onRegionChange = (region: Region) => {
         console.log(region);

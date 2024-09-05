@@ -1,6 +1,7 @@
 export default [
     {
         id: "0",
+        // The below is from server side as it uses image
         image:
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrEM-6gDUO7g1cdrNhBaqk_0nwxy6ILlIqsQ&usqp=CAU",
         name: "FULL BODY",
