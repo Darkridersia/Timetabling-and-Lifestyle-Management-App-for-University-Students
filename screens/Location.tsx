@@ -16,7 +16,7 @@ import { markers } from '../markers';
 
 const initialRegion = {
     latitude: 4.2105, // Replace with your own coordinates
-    longitude: 101.9758r,
+    longitude: 101.9758,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
 };
