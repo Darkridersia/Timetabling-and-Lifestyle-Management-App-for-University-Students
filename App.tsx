@@ -20,7 +20,7 @@ const App = () => {
     return (
         <FitnessContext>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+                <Stack.Navigator initialRouteName="SignUp" screenOptions={{ headerShown: false }}>
                     <Stack.Screen name="SignUp" component={SignUpScreen} />
                     <Stack.Screen name="Login" component={LoginScreen} />
                     <Stack.Screen name="Main">
