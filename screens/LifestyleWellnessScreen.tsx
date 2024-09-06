@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from "react-native";
 import FitnessCards from "../components/FitnessCards";
 import { FitnessItems } from "../Context";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import Location from "./Location";
 import { RootStackNavigationProp } from "../types"; // Import your navigation prop type
 import firestore from '@react-native-firebase/firestore';
+import ResultScreen from "./ResultScreen";
 
 const LifestyleWellnessScreen = () => {
 
@@ -16,7 +17,7 @@ const LifestyleWellnessScreen = () => {
             calories: calories,
             minutes: minutes
         }).then((res) => {
-            console.log('Workout Added');
+            console.log('Added Workout');
         }).catch((err) => {
             console.error("Error adding workout:", err);
         });
@@ -79,13 +80,20 @@ const LifestyleWellnessScreen = () => {
 
             {/* Add Workout button positioned at the bottom-right corner */}
 
+            <View style={styles.buttonContainer}>
+            <MaterialCommunityIcons
+                name="star" // Replace with the appropriate icon name
+                size={30} // Adjust size as needed
+                color="white" // Adjust color as needed
+                style={styles.icons}
+                onPress={() => navigation.navigate('Result')} // Navigate to SignUp screen
+            />
 
-            <View style={styles.container}>
                 <MaterialCommunityIcons
                     name="plus-circle" // Replace with the appropriate icon name
                     size={30} // Adjust size as needed
                     color="white" // Adjust color as needed
-                    style={styles.addButton}
+                    style={styles.icons}
                     onPress={() => {
                         console.log('Button Pressed'); // Log output
                         addWorkOut(); // Call the function to add workout
@@ -99,7 +107,7 @@ const LifestyleWellnessScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
+        },
     scrollContent: {
         flexGrow: 1, // Ensures the ScrollView can expand and scroll
     },
@@ -143,13 +151,21 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderRadius: 7,
     },
-    addButton: {
-        position: "absolute", // Absolute positioning
-        bottom: 20, // Distance from the bottom of the screen
-        right: 20, // Distance from the right side of the screen
+    icons: {
+        // bottom: 20, // Distance from the bottom of the screen
+        // right: 20, // Distance from the right side of the screen
         backgroundColor: "#FF6347",
         padding: 15,
         borderRadius: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 10
+    },
+
+    buttonContainer: {
+        position: "absolute", // Absolute positioning
+        bottom: 20, // Distance from the bottom of the screen
+        right: 20, // Distance from the right side of the screen
         alignItems: "center",
         justifyContent: "center",
     },

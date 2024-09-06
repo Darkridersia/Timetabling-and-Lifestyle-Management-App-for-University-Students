@@ -12,6 +12,7 @@ import Location from './screens/Location';
 import TimeTablingScreen from './screens/TimeTablingScreen';
 import LoginScreen from './screens/LoginScreen'; // Import LoginScreen
 import SignUpScreen from './screens/SignUpScreen';
+import ResultScreen from './screens/ResultScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator(); // Add stack navigator
@@ -37,6 +38,11 @@ const App = () => {
                         drawerIcon: () => null // Hide the icon too
                     }} />
                     <Drawer.Screen name="Location" component={Location} options={{
+                        drawerLabel: () => null,  // Hide from drawer menu
+                        title: 'Location',
+                        drawerIcon: () => null // Hide the icon too
+                    }} />
+                    <Drawer.Screen name="Result" component={ResultScreen} options={{
                         drawerLabel: () => null,  // Hide from drawer menu
                         title: 'Location',
                         drawerIcon: () => null // Hide the icon too

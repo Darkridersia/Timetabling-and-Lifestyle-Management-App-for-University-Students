@@ -8,7 +8,7 @@ import Location from './screens/Location';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import HomeScreen from './screens/HomeScreen';
-
+import ResultScreen from './screens/ResultScreen';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -52,6 +52,12 @@ const StackNavigator = () => {
             <Stack.Screen
                 name="SignUp"
                 component={SignUpScreen}
+                options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+                name="Result"
+                component={ResultScreen}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>
