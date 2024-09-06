@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Button, Alert } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import StackNavigator from './StackNavigator'; // Import your StackNavigator
 import { FitnessContext } from './Context'; // Import FitnessProvider
+import auth from '@react-native-firebase/auth';
 import HomeScreen from './screens/HomeScreen';
 import LifestyleWellnessScreen from './screens/LifestyleWellnessScreen';
 import Location from './screens/Location';
@@ -17,16 +18,28 @@ const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator(); // Add stack navigator
 
 const App = () => {
+    const handleLogout = (navigation: any) => {
+        auth()
+            .signOut()
+            .then(() => {
+                Alert.alert('Logged Out', 'You have been logged out successfully.');
+                navigation.replace('Login'); // Use 'replace' to prevent going back to the Main screen with back button
+            })
+            .catch(error => {
+                Alert.alert('Error', error.message);
+            });
+    };
+
     return (
         <FitnessContext>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="SignUp" screenOptions={{ headerShown: false }}>
-                    <Stack.Screen name="SignUp" component={SignUpScreen} />
+                <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
                     <Stack.Screen name="Login" component={LoginScreen} />
+                    <Stack.Screen name="SignUp" component={SignUpScreen} />
                     <Stack.Screen name="Main">
                         {() => (
                             <Drawer.Navigator
-                                drawerContent={(props) => <CustomDrawerComponent {...props} />}
+                                drawerContent={(props) => <CustomDrawerComponent {...props} handleLogout={handleLogout} />}
                                 screenOptions={{
                                     drawerActiveTintColor: 'darkslateblue',
                                     drawerActiveBackgroundColor: 'pink',
@@ -56,6 +69,7 @@ const App = () => {
 
 const CustomDrawerComponent = (props: any) => {
     const windowHeight = Dimensions.get('window').height;
+    const { navigation } = props;
 
     return (
         <DrawerContentScrollView {...props}>
@@ -67,18 +81,14 @@ const CustomDrawerComponent = (props: any) => {
                     borderTopWidth: 1,
                     borderTopColor: 'gray',
                 }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => props.handleLogout(navigation)}>
                         <View
                             style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 marginLeft: 20,
                             }}>
-                            <Text
-                                style={{
-                                    marginLeft: 20,
-                                    fontSize: 23,
-                                }}>
+                            <Text>
                                 Logout
                             </Text>
                         </View>
