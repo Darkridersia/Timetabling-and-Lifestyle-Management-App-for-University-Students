@@ -1,72 +1,106 @@
-import React, { useContext, useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 import FitnessCards from "../components/FitnessCards";
 import { FitnessItems } from "../Context";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import Location from "./Location";
 import { RootStackNavigationProp } from "../types"; // Import your navigation prop type
+import firestore from '@react-native-firebase/firestore';
 
 const LifestyleWellnessScreen = () => {
 
-    const { minutes, calories, workout } = useContext(FitnessItems)
+    const addWorkOut = () => {
+        firestore().collection("Workout").add({
+            workouts: workout,
+            calories: calories,
+            minutes: minutes
+        }).then((res) => {
+            console.log('Workout Added');
+        }).catch((err) => {
+            console.error("Error adding workout:", err);
+        });
+    };
+
+    const { minutes, calories, workout } = useContext(FitnessItems);
     const navigation = useNavigation<RootStackNavigationProp>(); // Use your navigation type
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <View style={styles.header}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                    <Text style={styles.headerText}>Home Workout</Text>
+        <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+                <View style={styles.header}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                        <Text style={styles.headerText}>Home Workout</Text>
 
-                    <MaterialCommunityIcons
-                        onPress={() => navigation.navigate("Location")} name="map-search-outline"
-                        size={30}
-                        color="white"
-                        fontWeight="bold"
-                        padding={10}
-                        paddingBottom={10}
-                    />
-                </View>
-
-                <View style={styles.statsContainer}>
-                    <View style={styles.stat}>
-                        <Text style={styles.statValue}>
-                            {workout}
-                        </Text>
-                        <Text style={styles.statLabel}>WORKOUTS</Text>
+                        <MaterialCommunityIcons
+                            onPress={() => navigation.navigate("Location")} name="map-search-outline"
+                            size={30}
+                            color="white"
+                            fontWeight="bold"
+                            padding={10}
+                            paddingBottom={10}
+                        />
                     </View>
 
-                    <View style={styles.stat}>
-                        <Text style={styles.statValue}>
-                            {calories}
-                        </Text>
-                        <Text style={styles.statLabel}>KCAL</Text>
+                    <View style={styles.statsContainer}>
+                        <View style={styles.stat}>
+                            <Text style={styles.statValue}>
+                                {workout}
+                            </Text>
+                            <Text style={styles.statLabel}>WORKOUTS</Text>
+                        </View>
+
+                        <View style={styles.stat}>
+                            <Text style={styles.statValue}>
+                                {calories}
+                            </Text>
+                            <Text style={styles.statLabel}>KCAL</Text>
+                        </View>
+
+                        <View style={styles.stat}>
+                            <Text style={styles.statValue}>
+                                {minutes}
+                            </Text>
+                            <Text style={styles.statLabel}>MINS</Text>
+                        </View>
                     </View>
 
-                    <View style={styles.stat}>
-                        <Text style={styles.statValue}>
-                            {minutes}
-                        </Text>
-                        <Text style={styles.statLabel}>MINS</Text>
+                    <View style={styles.imageContainer}>
+                        <Image
+                            style={styles.image}
+                            source={{
+                                uri: "https://cdn-images.cure.fit/www-curefit-com/image/upload/c_fill,w_842,ar_1.2,q_auto:eco,dpr_2,f_auto,fl_progressive/image/test/sku-card-widget/gold2.png",
+                            }}
+                        />
                     </View>
                 </View>
+                <FitnessCards />
+            </ScrollView>
 
-                <View style={styles.imageContainer}>
-                    <Image
-                        style={styles.image}
-                        source={{
-                            uri: "https://cdn-images.cure.fit/www-curefit-com/image/upload/c_fill,w_842,ar_1.2,q_auto:eco,dpr_2,f_auto,fl_progressive/image/test/sku-card-widget/gold2.png",
-                        }}
-                    />
-                </View>
+            {/* Add Workout button positioned at the bottom-right corner */}
+
+
+            <View style={styles.container}>
+                <MaterialCommunityIcons
+                    name="plus-circle" // Replace with the appropriate icon name
+                    size={30} // Adjust size as needed
+                    color="white" // Adjust color as needed
+                    style={styles.addButton}
+                    onPress={() => {
+                        console.log('Button Pressed'); // Log output
+                        addWorkOut(); // Call the function to add workout
+                    }}
+                />
             </View>
-            <FitnessCards />
-        </ScrollView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+    },
+    scrollContent: {
         flexGrow: 1, // Ensures the ScrollView can expand and scroll
     },
     header: {
@@ -108,6 +142,16 @@ const styles = StyleSheet.create({
         height: 120,
         marginTop: 20,
         borderRadius: 7,
+    },
+    addButton: {
+        position: "absolute", // Absolute positioning
+        bottom: 20, // Distance from the bottom of the screen
+        right: 20, // Distance from the right side of the screen
+        backgroundColor: "#FF6347",
+        padding: 15,
+        borderRadius: 50,
+        alignItems: "center",
+        justifyContent: "center",
     },
 });
 

@@ -9,7 +9,7 @@ import { FitnessContext } from './Context'; // Import FitnessProvider
 import HomeScreen from './screens/HomeScreen';
 import LifestyleWellnessScreen from './screens/LifestyleWellnessScreen';
 import Location from './screens/Location';
-import TimeTablingScreen from "./screens/TimeTablingScreen";
+import TimeTablingScreen from './screens/TimeTablingScreen';
 import LoginScreen from './screens/LoginScreen'; // Import LoginScreen
 import SignUpScreen from './screens/SignUpScreen';
 
@@ -20,35 +20,28 @@ const App = () => {
     return (
         <FitnessContext>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="SignUp" screenOptions={{ headerShown: false }}>
-                    <Stack.Screen name="SignUp" component={SignUpScreen} />
-                    <Stack.Screen name="Login" component={LoginScreen} />
-                    <Stack.Screen name="Main">
-                        {() => (
-                            <Drawer.Navigator
-                                drawerContent={(props) => <CustomDrawerComponent {...props} />}
-                                screenOptions={{
-                                    drawerActiveTintColor: 'darkslateblue',
-                                    drawerActiveBackgroundColor: 'pink',
-                                }}
-                            >
-                                <Drawer.Screen name="Home" component={HomeScreen} />
-                                <Drawer.Screen name="TimeTable" component={TimeTablingScreen} />
-                                <Drawer.Screen name="Lifestyle and Wellness" component={LifestyleWellnessScreen} />
-                                <Drawer.Screen name="WorkoutStack" component={StackNavigator} options={{
-                                    drawerLabel: () => null,  // Hide from drawer menu
-                                    title: 'Workout',
-                                    drawerIcon: () => null // Hide the icon too
-                                }} />
-                                <Drawer.Screen name="Location" component={Location} options={{
-                                    drawerLabel: () => null,  // Hide from drawer menu
-                                    title: 'Location',
-                                    drawerIcon: () => null // Hide the icon too
-                                }} />
-                            </Drawer.Navigator>
-                        )}
-                    </Stack.Screen>
-                </Stack.Navigator>
+                <Drawer.Navigator
+                    initialRouteName="Lifestyle and Wellness"
+                    drawerContent={(props) => <CustomDrawerComponent {...props} />}
+                    screenOptions={{
+                        drawerActiveTintColor: 'darkslateblue',
+                        drawerActiveBackgroundColor: 'pink',
+                    }}
+                >
+                    <Drawer.Screen name="Home" component={HomeScreen} />
+                    <Drawer.Screen name="TimeTable" component={TimeTablingScreen} />
+                    <Drawer.Screen name="Lifestyle and Wellness" component={LifestyleWellnessScreen} />
+                    <Drawer.Screen name="WorkoutStack" component={StackNavigator} options={{
+                        drawerLabel: () => null,  // Hide from drawer menu
+                        title: 'Workout',
+                        drawerIcon: () => null // Hide the icon too
+                    }} />
+                    <Drawer.Screen name="Location" component={Location} options={{
+                        drawerLabel: () => null,  // Hide from drawer menu
+                        title: 'Location',
+                        drawerIcon: () => null // Hide the icon too
+                    }} />
+                </Drawer.Navigator>
             </NavigationContainer>
         </FitnessContext>
     );
