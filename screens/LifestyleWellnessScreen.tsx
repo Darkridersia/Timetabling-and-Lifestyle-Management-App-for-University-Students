@@ -11,6 +11,7 @@ import ResultScreen from "./ResultScreen";
 
 const LifestyleWellnessScreen = () => {
 
+
     const addWorkOut = () => {
         firestore().collection("Workout").add({
             workouts: workout,
