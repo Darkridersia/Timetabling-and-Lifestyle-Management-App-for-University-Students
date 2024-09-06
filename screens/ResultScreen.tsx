@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator, FlatList, Alert } from "react-native";
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import CheckBox from '@react-native-community/checkbox'; // Import checkbox
+import { RootStackParamList, RootStackNavigationProp } from '../types';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+type WorkoutScreenRouteProp = RouteProp<RootStackParamList, 'WorkoutScreen'>;
 
 const ResultScreen = () => {
     const [loading, setLoading] = useState(true);
     const [workout, setWorkout] = useState([]);
     const [editedRemarks, setEditedRemarks] = useState({});
+    const [selectedItems, setSelectedItems] = useState({}); // To store selected items for deletion
+
+    const route = useRoute<WorkoutScreenRouteProp>();
+    const navigation = useNavigation<RootStackNavigationProp>();
 
     useEffect(() => {
         const subscriber = firestore()
@@ -75,14 +85,74 @@ const ResultScreen = () => {
         Alert.alert('All remarks updated!');
     };
 
+    // Handle selection of checkboxes
+    const handleSelectItem = (key, value) => {
+        setSelectedItems(prev => ({
+            ...prev,
+            [key]: value
+        }));
+    };
+
+    // Delete selected workouts
+    const deleteSelectedItems = () => {
+        const keysToDelete = Object.keys(selectedItems).filter(key => selectedItems[key]);
+        if (keysToDelete.length === 0) {
+            Alert.alert('No items selected for deletion.');
+            return;
+        }
+
+        Alert.alert(
+            "Confirm Deletion",
+            "Are you sure you want to delete the selected workouts?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                {
+                    text: "OK",
+                    onPress: () => {
+                        keysToDelete.forEach(key => {
+                            firestore()
+                                .collection('Workout')
+                                .doc(key)
+                                .delete()
+                                .then(() => {
+                                    console.log(`Workout with key: ${key} deleted`);
+                                    setSelectedItems(prev => {
+                                        const updatedSelection = { ...prev };
+                                        delete updatedSelection[key];
+                                        return updatedSelection;
+                                    });
+                                })
+                                .catch(error => {
+                                    console.error("Error deleting workout: ", error);
+                                });
+                        });
+                        Alert.alert('Selected items deleted!');
+                    }
+                }
+            ]
+        );
+    };
+
     if (loading) {
         return <ActivityIndicator size="large" color="#0000ff" style={{ flex: 1, justifyContent: 'center' }} />;
     }
 
     return (
         <View style={styles.container}>
+            <MaterialCommunityIcons
+                // Might need to remove "as never" if values are not properly passed
+                onPress={() => navigation.navigate('Lifestyle and Wellness' as never)}
+                style={styles.icon}
+                name="keyboard-backspace"
+                size={28}
+                color="black"
+            />
             {/* Table Header */}
             <View style={styles.tableHeader}>
+                <Text style={styles.tableHeaderText}>Select</Text>
                 <Text style={styles.tableHeaderText}>Workout</Text>
                 <Text style={styles.tableHeaderText}>Calories</Text>
                 <Text style={styles.tableHeaderText}>Minutes</Text>
@@ -96,6 +166,12 @@ const ResultScreen = () => {
                 keyExtractor={(item) => item.key}
                 renderItem={({ item }) => (
                     <View style={styles.tableRow}>
+                        {/* Checkbox for selecting rows */}
+                        <CheckBox
+                            value={!!selectedItems[item.key]} // Check if the item is selected
+                            onValueChange={(newValue) => handleSelectItem(item.key, newValue)}
+                        />
+
                         <Text style={styles.tableCell}>{item.workouts || 'N/A'}</Text>
                         <Text style={styles.tableCell}>{item.calories || 'N/A'}</Text>
                         <Text style={styles.tableCell}>{item.minutes || 'N/A'}</Text>
@@ -126,11 +202,12 @@ const ResultScreen = () => {
 
             {/* Update All Remarks Button */}
             <View style={styles.footer}>
+                {/* Delete Selected Items Button */}
                 <TouchableOpacity
-                    style={styles.updateButton}
-                    onPress={updateAllRemarks}
+                    style={[styles.updateButton, { backgroundColor: 'red', marginTop: 10 }]}
+                    onPress={deleteSelectedItems}
                 >
-                    <Text style={styles.buttonText}>Update All Remarks</Text>
+                    <Text style={styles.buttonText}>Delete Selected Items</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -138,17 +215,25 @@ const ResultScreen = () => {
 };
 
 const styles = StyleSheet.create({
+    icon: {
+        position: "absolute",
+        color: "black",
+        left: 20
+
+    },
     container: {
         flex: 1,
         padding: 16,
         backgroundColor: '#fff',
     },
+
     tableHeader: {
         flexDirection: 'row',
         backgroundColor: '#f1f1f1',
         paddingVertical: 10,
         borderBottomWidth: 1,
         borderColor: '#ddd',
+        top: 10
     },
     tableHeaderText: {
         flex: 1,

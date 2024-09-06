@@ -46,9 +46,9 @@ const WorkoutScreen = () => {
           {/* To add a check-box when the workout is "DONE" */}
           {completed.includes(item.name) ? (
             <MaterialCommunityIcons
-            marginLeft = {40}
-            marginTop = {-20}
-            name="check-circle"
+              marginLeft={40}
+              marginTop={-20}
+              name="check-circle"
               size={24}
               color="black"
             />

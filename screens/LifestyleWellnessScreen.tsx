@@ -15,7 +15,7 @@ const LifestyleWellnessScreen = () => {
     const addWorkOut = () => {
         firestore().collection("Workout").add({
             workouts: workout,
-            calories: calories,
+            calories: calories.toFixed(2),
             minutes: minutes
         }).then((res) => {
             console.log('Added Workout');
@@ -54,7 +54,7 @@ const LifestyleWellnessScreen = () => {
 
                         <View style={styles.stat}>
                             <Text style={styles.statValue}>
-                                {calories}
+                                {calories.toFixed(2)}
                             </Text>
                             <Text style={styles.statLabel}>KCAL</Text>
                         </View>
@@ -83,7 +83,7 @@ const LifestyleWellnessScreen = () => {
 
             <View style={styles.buttonContainer}>
             <MaterialCommunityIcons
-                name="star" // Replace with the appropriate icon name
+                name="details" // Replace with the appropriate icon name
                 size={30} // Adjust size as needed
                 color="white" // Adjust color as needed
                 style={styles.icons}

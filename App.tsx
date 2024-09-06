@@ -44,7 +44,7 @@ const App = () => {
                     }} />
                     <Drawer.Screen name="Result" component={ResultScreen} options={{
                         drawerLabel: () => null,  // Hide from drawer menu
-                        title: 'Location',
+                        title: 'Result',
                         drawerIcon: () => null // Hide the icon too
                     }} />
                 </Drawer.Navigator>
