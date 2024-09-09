@@ -1,12 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stylish Chat</title>
+    <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            background: #007bff;
+            color: #fff;
+            margin: -20px -20px 20px -20px; /* Extend background beyond container padding */
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0; /* Rounded corners at the top */
+        }
+
+        .chat-room {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .chatroom {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            background: #fafafa;
+            resize: none;
+            overflow-y: auto;
+            height: 400px; /* Height for chatroom */
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box; /* Ensure padding is included in width */
+        }
+
+        .input-group textarea {
+            resize: none;
+        }
+
+        .message-input {
+            height: 100px; /* Increased height for message textarea */
+        }
+
+        .chatroom-input {
+            height: 200px;
+        }
+
+        .send-button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .send-button:hover {
+            background: #0056b3;
+        }
+    </style>
     <script>
         var socket = io('http://' + document.domain + ':' + location.port + '/chat');
         socket.on('connect', function () {
-            // we emit a connected message to let the client know that we are connected.
+            // Emit a connected message to let the client know that we are connected.
             socket.emit('web_client_connected', { 'connected': true });
             console.log('Connected to WebSocket server');
         });
@@ -20,9 +121,7 @@
 
             chatroom.value += `${messageBag.sender} on ${messageBag.timestamp}:\n${messageBag.message}\n\n`;
         });
-    </script>
-    
-    <script>
+
         function send() {
             let username = document.getElementById('username').value;
             let message = document.getElementById('message').value;
@@ -39,32 +138,29 @@
             console.log('Client sent data to WebSocket server: ', data);
         }
     </script>
-    <title>Chat Test</title>
 </head>
 
 <body>
-    <h1>Chat Test</h1>
-    <form>
-        <table border="1">
-            <tr>
-                <th>Set User Name</th>
-                <td><input type="text" id="username" name="username" value="User" size="79"></td>
-            </tr>
-            <tr>
-                <th>Chat Room</th>
-                <td><textarea id="chatroom" name="chatroom" readonly cols="80" rows="20"></textarea></td>
-            </tr>
-            <tr>
-                <th>Message</th>
-                <td><textarea id="message" name="message" cols="80" rows="5"></textarea></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <button type="button" onclick="send()">Send</button>
-                </td>
-            </tr>
-        </table>
-    </form>
+    <div class="container">
+        <h1>Chat</h1>
+        <div class="chat-room">
+            <div class="input-group">
+                <label for="username">Set User Name</label>
+                <input type="text" id="username" name="username" value="User">
+            </div>
+            <div class="input-group">
+                <label for="chatroom">Chat Room</label>
+                <textarea id="chatroom" name="chatroom" class = "chatroom-input" readonly></textarea>
+            </div>
+            <div class="input-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" class="message-input"></textarea>
+            </div>
+            <div class="button-container">
+                <button type="button" class="send-button" onclick="send()">Send</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
