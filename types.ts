@@ -27,6 +27,7 @@ export type RootStackParamList = {
   Login: undefined; // Assuming you have a Login screen
   Main: undefined;
   Result: undefined
+  Chat: undefined
 };
 
 // Export the type for use in other components
