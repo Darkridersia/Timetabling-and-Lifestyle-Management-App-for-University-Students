@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Alert } from 'react-native';
 import MyButton from '../components/MyButton';
 import MyTextInput from '../components/MyTextInput';
 import auth from "@react-native-firebase/auth";
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types'; // Import the RootStackParamList type
 
@@ -17,18 +18,21 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const loginWithEmailAndPass = () => {
-        auth()
-            .signInWithEmailAndPassword(email, password)
-            .then((res) => {
-                console.log(res);
-                Alert.alert("Success", "Logged in successfully.");
-                navigation.navigate("Main"); // Navigate to 'Main', which contains the drawer and Home screen
-            })
-            .catch(err => {
-                Alert.alert("Error", err.message); // Display error message
-                console.log(err);
-            });
+    // Async function to handle login and save user data
+    const loginWithEmailAndPass = async () => {
+        try {
+            const res = await auth().signInWithEmailAndPassword(email, password);
+            console.log(res);
+
+            // Save the user data to AsyncStorage
+            await AsyncStorage.setItem('currentUser', JSON.stringify(res.user.email));
+
+            Alert.alert("Success", "Logged in successfully.");
+            navigation.navigate("Main"); // Navigate to 'Main', which contains the drawer and Home screen
+        } catch (err) {
+            Alert.alert("Error", err.message); // Display error message
+            console.log(err);
+        }
     };
 
     return (
@@ -39,6 +43,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                     value={email}
                     onChangeText={text => setEmail(text)}
                     placeholder="Enter Email"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
                 />
                 <MyTextInput
                     value={password}

@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import io from 'socket.io-client';
-
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 // Use this link --> http://localhost:5000/chat
 var socket = io('http://10.0.2.2:5000/chat', {
@@ -23,72 +23,87 @@ const ChatScreen = () => {
   const [message, setMessage] = useState('');
   const [chatroom, setChatroom] = useState('');
 
-  useEffect(()=>{
-    // When connected, emit a message to the server to inform that this client has connected to the server.
-    // Display a Toast to inform user that connection was made.
-    socket.on('connect', () => {
+  // Fetch the user name from AsyncStorage
+  const getUserNameFromStorage = async () => {
+    try {
+      const storedName = await AsyncStorage.getItem('currentUser');
+      if (storedName) {
+        setName(storedName); // Set the user name to state
+      }
+    } catch (error) {
+      console.error('Error fetching user name from AsyncStorage:', error);
+    }
+  };
 
+  useEffect(() => {
+    // Get user name when the component mounts
+    getUserNameFromStorage();
+
+    // Socket events and connection
+    socket.on('connect', () => {
       console.log(socket.id); // undefined
-      socket.emit('mobile_client_connected', {connected: true}, (response: any)=>{
-        console.log(response)
+      socket.emit('mobile_client_connected', { connected: true }, (response: any) => {
+        console.log(response);
       });
       ToastAndroid.show('Connected to server', ToastAndroid.LONG);
     });
 
     socket.on('connect_to_client', (data: any) => {
-      let greets=JSON.parse(data)
-      console.log(greets)
+      let greets = JSON.parse(data);
+      console.log(greets);
     });
 
     // Handle connection error
     socket.on('error', (error: any) => {
-        ToastAndroid.show('Failed to connect to server', ToastAndroid.LONG);
+      ToastAndroid.show('Failed to connect to server', ToastAndroid.LONG);
     });
 
-    // Receive chat broadcast from server.
-    socket.on('message_broadcast', (data:any) => {
+    // Receive chat broadcast from server
+    socket.on('message_broadcast', (data: any) => {
       console.log(data);
       let messageBag = JSON.parse(data);
 
-      setChatroom(chatroom => chatroom + `Message from ${messageBag.sender} at ${messageBag.timestamp}: \n${messageBag.message}\n\n`);
+      setChatroom((chatroom) => chatroom + `Message from ${messageBag.sender} at ${messageBag.timestamp}: \n${messageBag.message}\n\n`);
     });
-  },[]);
+  }, []);
 
   return (
-    <ScrollView style={ styles.container }>
+    <ScrollView style={styles.container}>
       <TextInput
-        style={ styles.input }
-        placeholder="Enter name"
-        value={ name }
-        selectTextOnFocus ={ true }
-        onChangeText={(name:string) => {setName(name)}}
+        style={styles.input}
+        placeholder={name === 'Your Name' ? 'Enter name' : name}
+        value={name}
+        selectTextOnFocus={true}
+        onChangeText={(name: string) => setName(name)}
       />
       <TextInput
-        style={ styles.output }
-        value={ chatroom }
-        multiline={ true }
-        editable={ false }
+        style={styles.output}
+        value={chatroom}
+        multiline={true}
+        editable={false}
       />
       <TextInput
-        style={ styles.input }
+        style={styles.input}
         placeholder="Enter message"
-        value={ message }
-        selectTextOnFocus ={ true }
-        onChangeText={(message: string) => {setMessage(message)}}
+        value={message}
+        selectTextOnFocus={true}
+        onChangeText={(message: string) => setMessage(message)}
       />
-      <TouchableOpacity onPress={() => {
-        socket.emit('message_sent', {
+      <TouchableOpacity
+        onPress={() => {
+          socket.emit('message_sent', {
             sender: name,
             message: message,
-        })
-      }}>
+          });
+        }}
+      >
         <View style={styles.button}>
           <Text style={styles.buttonText}>Send</Text>
         </View>
       </TouchableOpacity>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -119,7 +134,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     textAlign: 'center',
-  }
+  },
 });
 
 export default ChatScreen;
