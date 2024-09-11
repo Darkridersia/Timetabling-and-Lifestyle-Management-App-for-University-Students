@@ -14,6 +14,7 @@ import LoginScreen from './screens/LoginScreen'; // Import LoginScreen
 import SignUpScreen from './screens/SignUpScreen';
 import ResultScreen from './screens/ResultScreen';
 import ChatScreen from './screens/ChatScreen';
+// Hello from the other side
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
