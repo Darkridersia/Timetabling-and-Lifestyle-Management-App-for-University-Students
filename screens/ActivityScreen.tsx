@@ -114,15 +114,12 @@ const ActivityScreen: React.FC = () => {
     </View>
   );
 
-  const navigateToAddActivity = () => {
-    navigation.navigate('AddActivityScreen' as never);
-  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Your Activities</Text>
-        <TouchableOpacity onPress={navigateToAddActivity} style={styles.addButton}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddActivityScreen')} style={styles.addButton}>
           <Image source={require('../icon/plus.jpg')} style={styles.addIcon} />
         </TouchableOpacity>
       </View>
