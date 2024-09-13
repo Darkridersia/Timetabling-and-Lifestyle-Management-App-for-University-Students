@@ -77,3 +77,21 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+
+
+
+from Brian:
+
+1. clone the file from github
+2. npm install
+3. open emulatoer or simulator
+4. npx react-native run-android
+
+if cannot run, cd to android folder first:
+1. rm .gradle -force
+2. ./gradlew clean
+3. ./gradlew assembleDebug
+4. ./gradlew build
+
+after finish those steps, run again npx react-native run-android.

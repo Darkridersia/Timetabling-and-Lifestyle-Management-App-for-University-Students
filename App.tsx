@@ -14,6 +14,8 @@ import LoginScreen from './screens/LoginScreen'; // Import LoginScreen
 import SignUpScreen from './screens/SignUpScreen';
 import ResultScreen from './screens/ResultScreen';
 import ChatScreen from './screens/ChatScreen';
+import ActivityScreen from './screens/ActivityScreen';
+import AddActivityScreen from './screens/AddActivityScreen';
 // Hello from the other side
 
 const Drawer = createDrawerNavigator();
@@ -42,6 +44,8 @@ const App = () => {
         >
             <Drawer.Screen name="Home" component={HomeScreen} />
             <Drawer.Screen name="TimeTable" component={TimeTablingScreen} />
+            <Drawer.Screen name="Activity" component={ActivityScreen} />
+            <Drawer.Screen name="AddActivity" component={AddActivityScreen} />
             <Drawer.Screen name="Lifestyle and Wellness" component={LifestyleWellnessScreen} />
             <Drawer.Screen name="Chat" component={ChatScreen} />
             
