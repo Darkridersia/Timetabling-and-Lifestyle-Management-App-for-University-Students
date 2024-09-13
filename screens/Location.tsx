@@ -25,7 +25,7 @@ const Location = () => {
     const [region, setRegion] = useState(initialRegion);
     const mapRef = useRef<MapView>(null);
     const navigation = useNavigation();
-
+    
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (

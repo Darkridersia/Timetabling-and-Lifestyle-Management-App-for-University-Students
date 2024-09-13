@@ -28,6 +28,8 @@ export type RootStackParamList = {
   Main: undefined;
   Result: undefined
   Chat: undefined
+  AddActivity: undefined
+  Activity: undefined
 };
 
 // Export the type for use in other components

@@ -12,6 +12,14 @@ import SQLite, { SQLiteDatabase } from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import NetInfo from "@react-native-community/netinfo";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types';
+type ActivityScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Activity'>;
+
+type Props = {
+
+    navigation: ActivityScreenNavigationProp;
+};
 
 interface Activity {
   id: number;
@@ -22,10 +30,9 @@ interface Activity {
   synced: number;
 }
 
-const ActivityScreen: React.FC = () => {
+const ActivityScreen: React.FC<Props> = ({navigation}) => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [db, setDb] = useState<SQLiteDatabase | null>(null);
-  const navigation = useNavigation();
 
   useEffect(() => {
     SQLite.enablePromise(true);
@@ -119,7 +126,7 @@ const ActivityScreen: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Your Activities</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('AddActivityScreen')} style={styles.addButton}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddActivity')} style={styles.addButton}>
           <Image source={require('../icon/plus.jpg')} style={styles.addIcon} />
         </TouchableOpacity>
       </View>

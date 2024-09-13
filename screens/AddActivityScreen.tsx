@@ -13,6 +13,13 @@ import SQLite, { SQLiteDatabase, Transaction, ResultSet } from 'react-native-sql
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import NetInfo from '@react-native-community/netinfo';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types';
+type AddActivityScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AddActivity'>;
+
+type Props = {
+    navigation: AddActivityScreenNavigationProp;
+};
 
 interface Activity {
   id: string;
@@ -22,13 +29,12 @@ interface Activity {
   endDateTime: string;
 }
 
-const AddActivityScreen: React.FC = () => {
+const AddActivityScreen: React.FC<Props> = ({navigation}) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [startDateTime, setStartDateTime] = useState('');
   const [endDateTime, setEndDateTime] = useState('');
   const [db, setDb] = useState<SQLiteDatabase | null>(null);
-  const navigation = useNavigation();
 
   const [isStartDatePickerVisible, setStartDatePickerVisibility] = useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
