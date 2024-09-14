@@ -18,6 +18,7 @@ const LifestyleWellnessScreen = () => {
             calories: calories.toFixed(2),
             minutes: minutes
         }).then((res) => {
+            Alert.alert("Added Workout")
             console.log('Added Workout');
         }).catch((err) => {
             console.error("Error adding workout:", err);

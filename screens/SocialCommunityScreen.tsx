@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from "react-native";
-import SocialCards from "../components/SocialCards"; // Custom component for community events
+// import SocialCards from "../components/SocialCards"; // Custom component for community events
 import { SocialItems } from "../Context"; // Context related to social activities
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
