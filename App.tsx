@@ -8,6 +8,8 @@ import { FitnessContext } from './Context'; // Import FitnessProvider
 import auth from '@react-native-firebase/auth';
 import HomeScreen from './screens/HomeScreen';
 import LifestyleWellnessScreen from './screens/LifestyleWellnessScreen';
+import SocialCommunityScreen from './screens/SocialCommunityScreen';
+import NotificationsScreen from './screens/NotificationsScreen';
 import Location from './screens/Location';
 import TimeTablingScreen from './screens/TimeTablingScreen';
 import LoginScreen from './screens/LoginScreen'; // Import LoginScreen

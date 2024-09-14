@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import WorkoutScreen from './screens/WorkoutScreen';
 import LifestyleAndWellnessScreen from './screens/LifestyleWellnessScreen'; // Import your other screen
+import SocialCommunityScreen from './screens/SocialCommunityScreen';
 import FitScreen from './screens/FitScreen';
 import RestScreen from './screens/RestScreen';
 import Location from './screens/Location';
