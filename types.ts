@@ -1,4 +1,11 @@
 import { StackNavigationProp } from '@react-navigation/stack';
+interface Activity {
+  id?: string;
+  name: string;
+  description: string;
+  startDateTime: string;
+  endDateTime: string;
+}
 
 export type RootStackParamList = {
   Home: undefined; // No parameters for Home
@@ -28,6 +35,7 @@ export type RootStackParamList = {
   Main: undefined;
   Result: undefined
   Chat: undefined
+  AddEditActivity: { activity?: Activity } | undefined;
 };
 
 // Export the type for use in other components
