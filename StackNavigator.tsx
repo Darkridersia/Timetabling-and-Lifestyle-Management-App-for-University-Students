@@ -11,6 +11,9 @@ import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import HomeScreen from './screens/HomeScreen';
 import ResultScreen from './screens/ResultScreen';
+import AddEditActivityScreen from './screens/AddEditActivityScreen';
+import ActivityScreen from './screens/Activity';
+
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -66,7 +69,7 @@ const StackNavigator = () => {
                 component={SignUpScreen}
                 options={{ headerShown: false }}
             />
-
+            
             <Stack.Screen
                 name="Result"
                 component={ResultScreen}

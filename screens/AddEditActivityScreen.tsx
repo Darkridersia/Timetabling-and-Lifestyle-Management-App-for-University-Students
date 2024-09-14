@@ -22,13 +22,13 @@ interface Activity {
 }
 
 type RootStackParamList = {
-  AddActivity: { activity?: Activity } | undefined;
+  AddEditActivity: { activity?: Activity } | undefined;
 };
 
 
 const AddEditActivityScreen: React.FC = () => {
   const route = useRoute();
-  const { activity } = route.params as { activity?: Activity };
+  const { activity } = route.params || {} as { activity?: Activity };
   const [name, setName] = useState(activity?.name || '');
   const [description, setDescription] = useState(activity?.description || '');
   const [startDateTime, setStartDateTime] = useState(activity?.startDateTime || '');

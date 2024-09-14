@@ -11,7 +11,7 @@ import SQLite, { SQLiteDatabase } from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { RootStackNavigationProp } from '../types';
+import { RootStackNavigationProp} from '../types';
 
 
 interface Activity {
