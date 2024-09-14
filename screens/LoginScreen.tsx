@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, Image } from 'react-native'; // Import Image
 import MyButton from '../components/MyButton';
 import MyTextInput from '../components/MyTextInput';
 import auth from "@react-native-firebase/auth";
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types'; // Import the RootStackParamList type
+import { RootStackParamList } from '../types';
 
-// Define the navigation prop type for LoginScreen
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
 type Props = {
@@ -18,7 +17,6 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // Async function to handle login and save user data
     const loginWithEmailAndPass = async () => {
         try {
             const res = await auth().signInWithEmailAndPassword(email, password);
@@ -28,9 +26,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             await AsyncStorage.setItem('currentUser', JSON.stringify(res.user.email));
 
             Alert.alert("Success", "Logged in successfully.");
-            navigation.navigate("Main"); // Navigate to 'Main', which contains the drawer and Home screen
+            navigation.navigate("Main");
         } catch (err) {
-            Alert.alert("Error", err.message); // Display error message
+            Alert.alert("Error", err.message);
             console.log(err);
         }
     };
@@ -38,7 +36,16 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Login Screen</Text>
+
+
+
             <View style={styles.inputContainer}>
+                {/* Profile Picture */}
+                <Image
+                    source={require('../images/profile.png')}  // Replace with your profile image path
+                    style={styles.profileImage}
+                />
+
                 <MyTextInput
                     value={email}
                     onChangeText={text => setEmail(text)}
@@ -89,6 +96,13 @@ const styles = StyleSheet.create({
         margin: 5,
         fontSize: 24,
         fontWeight: 'bold',
+    },
+    profileImage: {
+        width: 100, // Width of the image
+        height: 100, // Height of the image
+        borderRadius: 50, // Make the image circular
+        marginBottom: 30, // Space between the image and the rest of the UI
+        
     },
     textDontHave: {
         alignSelf: "flex-end",
