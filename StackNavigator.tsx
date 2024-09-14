@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import WorkoutScreen from './screens/WorkoutScreen';
 import LifestyleAndWellnessScreen from './screens/LifestyleWellnessScreen'; // Import your other screen
 import SocialCommunityScreen from './screens/SocialCommunityScreen';
+import NotificationsScreen from './screens/NotificationsScreen';
 import FitScreen from './screens/FitScreen';
 import RestScreen from './screens/RestScreen';
 import Location from './screens/Location';
@@ -30,6 +31,16 @@ const StackNavigator = () => {
                 component={LifestyleAndWellnessScreen}
                 options={{ headerShown: false }}
             />
+            <Stack.Screen
+                name="SocialCommunityScreen"
+                component={SocialCommunityScreen}
+                options={{ headerShown: false }}
+                />
+             <Stack.Screen
+                name="NotificationsScreen"
+                component={NotificationsScreen}
+                options={{ headerShown: false }}
+                />
             <Stack.Screen
                 name="Fit"
                 component={FitScreen}

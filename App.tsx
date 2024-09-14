@@ -46,7 +46,9 @@ const App = () => {
             <Drawer.Screen name="TimeTable" component={TimeTablingScreen} />
             <Drawer.Screen name="Lifestyle and Wellness" component={LifestyleWellnessScreen} />
             <Drawer.Screen name="Chat" component={ChatScreen} />
-            
+            <Drawer.Screen name="SocialCommunityScreen" component={SocialCommunityScreen} />
+            <Drawer.Screen name="NotificationsScreen" component={NotificationsScreen} />
+
             <Drawer.Screen name="WorkoutStack" component={StackNavigator} options={{
                         drawerLabel: () => null,  // Hide from drawer menu
                         title: 'Workout',
