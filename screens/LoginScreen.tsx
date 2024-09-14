@@ -18,6 +18,12 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     const [password, setPassword] = useState('');
 
     const loginWithEmailAndPass = async () => {
+        // Check if email or password fields are empty
+        if (email.trim() === '' || password.trim() === '') {
+            Alert.alert("Error", "Both email and password fields are required.");
+            return; // Stop further execution if fields are empty
+        }
+
         try {
             const res = await auth().signInWithEmailAndPassword(email, password);
             console.log(res);
@@ -35,11 +41,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Login Screen</Text>
-
-
-
             <View style={styles.inputContainer}>
+                <Text style={styles.text}>Login Screen</Text>
+
                 {/* Profile Picture */}
                 <Image
                     source={require('../images/profile.png')}  // Replace with your profile image path
@@ -95,14 +99,16 @@ const styles = StyleSheet.create({
     text: {
         margin: 5,
         fontSize: 24,
-        fontWeight: 'bold',
+        fontWeight: "bold",
+        marginBottom: 20,
+        color: "black"
     },
     profileImage: {
         width: 100, // Width of the image
         height: 100, // Height of the image
         borderRadius: 50, // Make the image circular
         marginBottom: 30, // Space between the image and the rest of the UI
-        
+
     },
     textDontHave: {
         alignSelf: "flex-end",

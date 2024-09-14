@@ -23,7 +23,12 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
             Alert.alert("Error", "Passwords do not match");
             return;
         }
-
+    
+        if (password.length > 12) {
+            Alert.alert("Error", "Password cannot be longer than 12 characters.");
+            return;
+        }
+    
         auth()
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
@@ -39,8 +44,8 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Sign Up Screen</Text>
             <View style={styles.inputContainer}>
+                <Text style={styles.text}>Sign Up Screen</Text>
                 <MyTextInput
                     value={email}
                     // Can ignore the error
@@ -90,5 +95,7 @@ const styles = StyleSheet.create({
         margin: 5,
         fontSize: 24,
         fontWeight: 'bold',
+        marginBottom: 35,
+        color: "black"
     },
 });
