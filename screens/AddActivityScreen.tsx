@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   View,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SQLite, { SQLiteDatabase, Transaction, ResultSet } from 'react-native-sqlite-storage';

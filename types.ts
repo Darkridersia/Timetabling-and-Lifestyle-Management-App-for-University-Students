@@ -30,6 +30,7 @@ export type RootStackParamList = {
   Chat: undefined
   AddActivity: undefined
   Activity: undefined
+  TimeTable: any
 };
 
 // Export the type for use in other components
