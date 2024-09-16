@@ -1,30 +1,36 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, Alert } from "react-native";
 import SocialCards from "../components/SocialCards"; // Custom component for community events
 import { SocialItems } from "../Context"; // Context related to social activities
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
-import Location from "./Location";
-import { RootStackNavigationProp } from "../types"; // Import your navigation prop type
 import firestore from '@react-native-firebase/firestore';
-import ResultScreen from "./ResultScreen";
+import { RootStackNavigationProp } from "../types"; // Import your navigation prop type
 
-const SocialCommunityScreen = () => {
+const SocialCommunityScreen: React.FC = () => {
+    const { socialEvent, attendees, duration } = useContext(SocialItems);
+
+    const navigation = useNavigation<RootStackNavigationProp>();
 
     const addSocialEvent = () => {
-        firestore().collection("SocialEvents").add({
-            event: socialEvent,
-            attendees: attendees,
-            duration: duration
-        }).then((res) => {
-            console.log('Added Social Event');
-        }).catch((err) => {
-            console.error("Error adding social event:", err);
-        });
+        if (socialEvent && attendees && duration) {
+            firestore().collection("SocialEvents").add({
+                event: socialEvent,
+                attendees: attendees,
+                duration: duration
+            })
+            .then(() => {
+                console.log('Added Social Event');
+            })
+            .catch((err) => {
+                console.error("Error adding social event:", err);
+                Alert.alert("Error", "Failed to add social event.");
+            });
+        } else {
+            console.log("Some fields are missing, unable to add social event");
+            Alert.alert("Error", "Please make sure all event details are filled.");
+        }
     };
-
-    const { socialEvent, attendees, duration } = useContext(SocialItems); 
-    const navigation = useNavigation<RootStackNavigationProp>(); 
 
     return (
         <View style={styles.container}>
@@ -34,33 +40,31 @@ const SocialCommunityScreen = () => {
                         <Text style={styles.headerText}>Community Events</Text>
 
                         <MaterialCommunityIcons
-                            onPress={() => navigation.navigate("Location")} name="map-search-outline"
+                            onPress={() => navigation.navigate("Location")}
+                            name="map-search-outline"
                             size={30}
                             color="white"
-                            fontWeight="bold"
-                            padding={10}
-                            paddingBottom={10}
                         />
                     </View>
 
                     <View style={styles.statsContainer}>
                         <View style={styles.stat}>
                             <Text style={styles.statValue}>
-                                {socialEvent}
+                                {socialEvent || "No event"}
                             </Text>
                             <Text style={styles.statLabel}>EVENTS</Text>
                         </View>
 
                         <View style={styles.stat}>
                             <Text style={styles.statValue}>
-                                {attendees}
+                                {attendees || 0}
                             </Text>
                             <Text style={styles.statLabel}>ATTENDEES</Text>
                         </View>
 
                         <View style={styles.stat}>
                             <Text style={styles.statValue}>
-                                {duration} mins
+                                {duration ? `${duration} mins` : "0 mins"}
                             </Text>
                             <Text style={styles.statLabel}>DURATION</Text>
                         </View>
