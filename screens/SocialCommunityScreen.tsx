@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, ScrollView, Alert, TextInput, Button, PermissionsAndroid, Platform } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Image, ScrollView, Alert, TextInput, Button } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import firestore from '@react-native-firebase/firestore';
-import storage from '@react-native-firebase/storage';
 import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker';
 
 const SocialCommunityScreen: React.FC = () => {
@@ -13,44 +12,8 @@ const SocialCommunityScreen: React.FC = () => {
 
     const navigation = useNavigation();
 
-    // Request storage permission for Android
-    const requestStoragePermission = async () => {
-        if (Platform.OS === 'android') {
-            try {
-                const granted = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                    {
-                        title: "Permission to access gallery",
-                        message: "We need your permission to access the gallery to upload event images.",
-                        buttonNeutral: "Ask Me Later",
-                        buttonNegative: "Cancel",
-                        buttonPositive: "OK",
-                    }
-                );
-                return granted === PermissionsAndroid.RESULTS.GRANTED;
-            } catch (err) {
-                console.warn(err);
-                return false;
-            }
-        }
-        return true; // No need for permission on iOS
-    };
-
-    useEffect(() => {
-        // Automatically request storage permission on component mount (Android only)
-        if (Platform.OS === 'android') {
-            requestStoragePermission();
-        }
-    }, []);
-
     // Function to pick image from the gallery
     const pickImage = async () => {
-        const hasPermission = await requestStoragePermission();
-        if (!hasPermission) {
-            Alert.alert("Permission denied", "Unable to access gallery.");
-            return;
-        }
-
         const options: ImageLibraryOptions = {
             mediaType: 'photo',
             maxWidth: 1024,
