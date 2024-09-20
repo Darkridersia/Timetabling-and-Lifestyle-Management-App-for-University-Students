@@ -1,38 +1,32 @@
-import React, { useContext, useEffect, useState } from "react";
-<<<<<<< HEAD
+import React, { useContext } from "react";
 import { View, Text, StyleSheet, Image, ScrollView, Alert } from "react-native";
-import SocialCards from "../components/SocialCards"; // Custom component for community events
-=======
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from "react-native";
-// import SocialCards from "../components/SocialCards"; // Custom component for community events
->>>>>>> 6d036e1c2006f73b35ffab1488d32923938a6c89
-import { SocialItems } from "../Context"; // Context related to social activities
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import firestore from '@react-native-firebase/firestore';
-import { RootStackNavigationProp } from "../types"; // Import your navigation prop type
+import { RootStackNavigationProp } from "../types";
+import { FitnessItems } from "../Context";
 
 const SocialCommunityScreen: React.FC = () => {
-    const { socialEvent, attendees, duration } = useContext(SocialItems);
+    const { workout, calories, minutes } = useContext(FitnessItems); // Updated values to match FitnessItems context
 
     const navigation = useNavigation<RootStackNavigationProp>();
 
     const addSocialEvent = () => {
-        if (socialEvent && attendees && duration) {
-            firestore().collection("SocialEvents").add({
-                event: socialEvent,
-                attendees: attendees,
-                duration: duration
+        if (workout && calories && minutes) {
+            firestore().collection("FitnessEvents").add({
+                workout,
+                calories,
+                minutes,
             })
             .then(() => {
-                console.log('Added Social Event');
+                console.log('Added Fitness Event');
             })
             .catch((err) => {
-                console.error("Error adding social event:", err);
-                Alert.alert("Error", "Failed to add social event.");
+                console.error("Error adding fitness event:", err);
+                Alert.alert("Error", "Failed to add fitness event.");
             });
         } else {
-            console.log("Some fields are missing, unable to add social event");
+            console.log("Some fields are missing, unable to add fitness event");
             Alert.alert("Error", "Please make sure all event details are filled.");
         }
     };
@@ -42,7 +36,7 @@ const SocialCommunityScreen: React.FC = () => {
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 <View style={styles.header}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                        <Text style={styles.headerText}>Community Events</Text>
+                        <Text style={styles.headerText}>Fitness Events</Text>
 
                         <MaterialCommunityIcons
                             onPress={() => navigation.navigate("Location")}
@@ -55,21 +49,21 @@ const SocialCommunityScreen: React.FC = () => {
                     <View style={styles.statsContainer}>
                         <View style={styles.stat}>
                             <Text style={styles.statValue}>
-                                {socialEvent || "No event"}
+                                {workout || "No event"}
                             </Text>
-                            <Text style={styles.statLabel}>EVENTS</Text>
+                            <Text style={styles.statLabel}>WORKOUT</Text>
                         </View>
 
                         <View style={styles.stat}>
                             <Text style={styles.statValue}>
-                                {attendees || 0}
+                                {calories || 0}
                             </Text>
-                            <Text style={styles.statLabel}>ATTENDEES</Text>
+                            <Text style={styles.statLabel}>CALORIES</Text>
                         </View>
 
                         <View style={styles.stat}>
                             <Text style={styles.statValue}>
-                                {duration ? `${duration} mins` : "0 mins"}
+                                {minutes ? `${minutes}`: "0 mins"}
                             </Text>
                             <Text style={styles.statLabel}>DURATION</Text>
                         </View>
@@ -79,32 +73,30 @@ const SocialCommunityScreen: React.FC = () => {
                         <Image
                             style={styles.image}
                             source={{
-                                uri: "https://example.com/community-event-image.png", // Replace with relevant image
+                                uri: "https://example.com/fitness-event-image.png", // Replace with relevant image
                             }}
                         />
                     </View>
                 </View>
-                <SocialCards /> {/* Component to show social/community events */}
             </ScrollView>
 
-            {/* Add Social Event button positioned at the bottom-right corner */}
             <View style={styles.buttonContainer}>
                 <MaterialCommunityIcons
-                    name="details" 
-                    size={30} 
-                    color="white" 
+                    name="details"
+                    size={30}
+                    color="white"
                     style={styles.icons}
                     onPress={() => navigation.navigate('Result')} // Navigate to event details
                 />
 
                 <MaterialCommunityIcons
-                    name="plus-circle" 
-                    size={30} 
-                    color="white" 
+                    name="plus-circle"
+                    size={30}
+                    color="white"
                     style={styles.icons}
                     onPress={() => {
-                        console.log('Button Pressed'); // Log output
-                        addSocialEvent(); // Call the function to add a social event
+                        console.log('Button Pressed');
+                        addSocialEvent();
                     }}
                 />
             </View>
@@ -117,7 +109,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
-        flexGrow: 1, // Ensures the ScrollView can expand and scroll
+        flexGrow: 1, 
     },
     header: {
         backgroundColor: "#3CB371",
@@ -169,8 +161,8 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         position: "absolute",
-        bottom: 20, 
-        right: 20, 
+        bottom: 20,
+        right: 20,
         alignItems: "center",
         justifyContent: "center",
     },
