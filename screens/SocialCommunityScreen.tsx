@@ -79,19 +79,35 @@ const SocialCommunityScreen: React.FC = () => {
         });
     };
 
-    // Function to upload the image to Firebase Storage
-    const uploadImageToStorage = async (imageUri: string, imageName: string) => {
-        try {
-            const reference = storage().ref(imageName);
-            await reference.putFile(imageUri);
-            const url = await reference.getDownloadURL();
-            setEventImageURL(url);
-            Alert.alert("Image Uploaded", "Image successfully uploaded.");
-        } catch (error) {
-            console.error("Error uploading image:", error);
-            Alert.alert("Error", "Failed to upload image.");
+  // Function to upload the image to Firebase Storage
+  const uploadImageToStorage = async (imageUri: string, imageName: string) => {
+    try {
+        let uploadUri = imageUri;
+
+        if (Platform.OS === 'android' && imageUri.startsWith('content://')) {
+            const fs = require('react-native-fs');
+            
+            const fileExtension = imageUri.split('.').pop(); 
+            const tempFilePath = `${fs.DocumentDirectoryPath}/${imageName}.${fileExtension}`;
+            
+            await fs.copyFile(imageUri, tempFilePath);
+            uploadUri = tempFilePath;
         }
-    };
+
+         const reference = storage().ref(imageName);
+        
+        await reference.putFile(uploadUri);
+
+       const url = await reference.getDownloadURL();
+        setEventImageURL(url);
+
+        Alert.alert("Image Uploaded", "Image successfully uploaded.");
+    } catch (error) {
+        console.error("Error uploading image:", error);
+        Alert.alert("Error", "Failed to upload image. Please try again.");
+    }
+};
+
 
     // Add social event to Firestore
     const addSocialEvent = () => {
